@@ -1,0 +1,45 @@
+import { NavLink } from 'react-router-dom'
+import { Container } from '@/components/common/container'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/utils/cn'
+
+const links = [
+  { to: '/', label: 'Home' },
+  { to: '/sobre', label: 'Sobre' },
+  { to: '/cardapio', label: 'Cardápio' },
+  { to: '/kits', label: 'Kits' },
+  { to: '/contato', label: 'Contato' },
+]
+
+export function Navbar() {
+  return (
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-white/90 backdrop-blur">
+      <Container className="flex h-16 items-center justify-between py-3">
+        <NavLink to="/" className="text-lg font-semibold">
+          M Gourmet
+        </NavLink>
+        <nav className="hidden items-center gap-6 md:flex">
+          {links.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                cn(
+                  'text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]',
+                  isActive && 'text-[var(--color-text-primary)]',
+                )
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
+        <Button asChild size="sm">
+          <a href="https://wa.me/5511988880000" target="_blank" rel="noreferrer">
+            Pedir agora
+          </a>
+        </Button>
+      </Container>
+    </header>
+  )
+}
