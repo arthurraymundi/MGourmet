@@ -14,6 +14,12 @@ class ProductCategory(StrEnum):
     WEIGHT_LOSS = "Emagrecimento"
     MUSCLE_GAIN = "Ganho de Massa"
     VEGETARIAN = "Vegetariana"
+    PRATO_FITNESS = "Prato Fitness"
+    MINI_PRATO_FITNESS = "Mini Prato Fitness"
+    PRATO_KIDS = "Prato Kids"
+    SOPA = "Sopa"
+    PROTEINA = "Proteína"
+    PREMIUM = "Premium"
 
 
 class Product(TimestampMixin, Base):
