@@ -4,6 +4,12 @@ export type ProductCategory =
   | 'Emagrecimento'
   | 'Ganho de Massa'
   | 'Vegetariana'
+  | 'Prato Fitness'
+  | 'Mini Prato Fitness'
+  | 'Prato Kids'
+  | 'Sopa'
+  | 'Proteína'
+  | 'Premium'
 
 export interface NutritionInfo {
   calories: number

@@ -16,6 +16,12 @@ const categories: Array<ProductCategory | 'all'> = [
   'Emagrecimento',
   'Ganho de Massa',
   'Vegetariana',
+  'Prato Fitness',
+  'Mini Prato Fitness',
+  'Prato Kids',
+  'Sopa',
+  'Proteína',
+  'Premium',
 ]
 
 const sortLabels: Record<MenuSort, string> = {
@@ -27,10 +33,37 @@ const sortLabels: Record<MenuSort, string> = {
 
 export default function MenuPage() {
   const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const { query, category, sort, setQuery, setCategory, setSort, filteredProducts } = useMenuFilters(products)
 
   useEffect(() => {
-    void getProducts().then(setProducts)
+    let active = true
+
+    async function loadProducts() {
+      try {
+        setLoading(true)
+        setError(null)
+        const loadedProducts = await getProducts()
+        if (active) {
+          setProducts(loadedProducts)
+        }
+      } catch {
+        if (active) {
+          setError('Não foi possível carregar o cardápio. Tente novamente em instantes.')
+        }
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadProducts()
+
+    return () => {
+      active = false
+    }
   }, [])
 
   return (
@@ -76,11 +109,27 @@ export default function MenuPage() {
           </select>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? <p className="text-sm text-[var(--color-text-secondary)]">Carregando cardápio...</p> : null}
+        {error ? <p className="text-sm text-red-600" role="alert">{error}</p> : null}
+
+        {!loading && !error ? (
+          <>
+            <p className="mb-4 text-sm text-[var(--color-text-secondary)]">
+              Exibindo {filteredProducts.length} {filteredProducts.length === 1 ? 'produto' : 'produtos'}
+            </p>
+            {filteredProducts.length > 0 ? (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-[var(--color-text-secondary)]">
+                Nenhum produto foi encontrado com os filtros selecionados.
+              </p>
+            )}
+          </>
+        ) : null}
       </Section>
     </>
   )

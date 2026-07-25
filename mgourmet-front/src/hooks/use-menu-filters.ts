@@ -12,10 +12,8 @@ export function useMenuFilters(products: Product[]) {
     const normalizedQuery = query.trim().toLowerCase()
     const filtered = products.filter((product) => {
       const byCategory = category === 'all' || product.category === category
-      const byQuery =
-        normalizedQuery.length === 0 ||
-        product.name.toLowerCase().includes(normalizedQuery) ||
-        product.description.toLowerCase().includes(normalizedQuery)
+      const searchableContent = `${product.name} ${product.description}`.toLowerCase()
+      const byQuery = normalizedQuery.length === 0 || searchableContent.includes(normalizedQuery)
       return byCategory && byQuery
     })
 
