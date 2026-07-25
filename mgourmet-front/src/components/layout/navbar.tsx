@@ -37,7 +37,7 @@ export function Navbar() {
         </nav>
         <Button asChild size="sm">
           <a href={`https://wa.me/${WHATSAPP_PHONE_NUMBER}`} target="_blank" rel="noreferrer">
-            Pedir agora
+            Negociar pedido
           </a>
         </Button>
       </Container>

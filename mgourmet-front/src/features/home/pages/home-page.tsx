@@ -146,7 +146,7 @@ export default function HomePage() {
         />
         <div className="flex justify-center">
           <Button asChild size="lg">
-            <Link to="/cardapio">Começar pedido</Link>
+            <Link to="/cardapio">Montar pedido e negociar</Link>
           </Button>
         </div>
       </Section>

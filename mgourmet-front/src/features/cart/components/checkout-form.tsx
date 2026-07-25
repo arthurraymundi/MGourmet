@@ -63,7 +63,8 @@ export function CheckoutForm({ disabled, isSubmitting, onSubmit }: CheckoutFormP
       <FormField label="Observações (opcional)">
         <textarea className="min-h-20 w-full rounded-xl border border-[var(--color-border)] bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-500)]" value={customer.notes} onChange={(event) => updateField('notes', event.target.value)} />
       </FormField>
-      <Button className="w-full" type="submit" disabled={disabled || isSubmitting}>{isSubmitting ? 'Salvando pedido...' : 'Finalizar pedido pelo WhatsApp'}</Button>
+      <p className="text-sm text-[var(--color-text-secondary)]">Ao enviar, vamos encaminhar seu pedido para negociação pelo WhatsApp. A data e o horário serão combinados manualmente.</p>
+      <Button className="w-full" type="submit" disabled={disabled || isSubmitting}>{isSubmitting ? 'Salvando pedido...' : 'Enviar pedido para negociar no WhatsApp'}</Button>
       {disabled ? <p className="text-center text-sm text-[var(--color-text-secondary)]" role="status">Adicione produtos ao carrinho para continuar.</p> : null}
     </form>
   )

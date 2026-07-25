@@ -54,6 +54,7 @@ export default function MenuPage() {
       <Section containerClassName="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-8">
         <div>
           <SectionTitle eyebrow="Cardápio" title="Escolha por objetivo nutricional" description="Filtre por categoria, busque pratos e ordene conforme sua prioridade." />
+          <div className="mb-6 rounded-xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-900" role="note">Monte seu pedido com calma. Depois do envio, combinamos a data e o horário de entrega ou retirada diretamente pelo WhatsApp.</div>
           <div className="mb-6 grid gap-3 md:grid-cols-3">
             <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por nome ou descrição" aria-label="Buscar pratos no cardápio" />
             <select className="h-11 rounded-xl border border-[var(--color-border)] px-3 text-sm" value={category} onChange={(event) => setCategory(event.target.value as ProductCategory | 'all')} aria-label="Filtrar cardápio por categoria">

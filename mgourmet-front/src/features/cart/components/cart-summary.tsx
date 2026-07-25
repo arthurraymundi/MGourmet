@@ -47,6 +47,9 @@ export function CartSummary({ mobile = false, onClose }: CartSummaryProps) {
 
   const content = (
     <>
+      <div className="rounded-xl border border-orange-200 bg-orange-50 px-3 py-3 text-sm text-orange-900" role="note">
+        A data e o horário da entrega ou retirada serão combinados manualmente pelo WhatsApp após o envio do pedido.
+      </div>
       {items.length === 0 ? (
         <div className="py-8 text-center text-sm text-[var(--color-text-secondary)]"><ShoppingBag className="mx-auto mb-3 h-8 w-8" />Seu carrinho está vazio. Adicione seus pratos favoritos.</div>
       ) : (
