@@ -1,3 +1,5 @@
+import { memo } from 'react'
+import { Minus, Plus } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -6,9 +8,19 @@ import { formatCurrency } from '@/utils/currency'
 
 interface ProductCardProps {
   product: Product
+  quantity?: number
+  onAdd?: (product: Product) => void
+  onIncrement?: (productId: string) => void
+  onDecrement?: (productId: string) => void
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export const ProductCard = memo(function ProductCard({
+  product,
+  quantity = 0,
+  onAdd,
+  onIncrement,
+  onDecrement,
+}: ProductCardProps) {
   return (
     <Card className="h-full overflow-hidden p-0">
       <img
@@ -45,8 +57,24 @@ export function ProductCard({ product }: ProductCardProps) {
           <div>Gord: {product.nutrition.fat}g</div>
         </dl>
         <p className="text-lg font-semibold text-orange-600">{formatCurrency(product.price)}</p>
-        <Button className="w-full">Adicionar ao carrinho</Button>
+        {onAdd && onIncrement && onDecrement ? (
+          quantity > 0 ? (
+            <div className="flex h-11 items-center justify-between rounded-xl border border-[var(--color-border)]" aria-label={`Quantidade de ${product.name}`}>
+              <Button variant="ghost" size="sm" type="button" onClick={() => onDecrement(product.id)} aria-label={`Remover uma unidade de ${product.name}`}>
+                <Minus className="h-4 w-4" />
+              </Button>
+              <span className="text-sm font-semibold" aria-live="polite">{quantity}</span>
+              <Button variant="ghost" size="sm" type="button" onClick={() => onIncrement(product.id)} aria-label={`Adicionar uma unidade de ${product.name}`}>
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <Button className="w-full" type="button" onClick={() => onAdd(product)}>Adicionar ao carrinho</Button>
+          )
+        ) : (
+          <Button className="w-full">Adicionar ao carrinho</Button>
+        )}
       </div>
     </Card>
   )
-}
+})

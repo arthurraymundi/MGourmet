@@ -1,9 +1,10 @@
 import { MessageCircle } from 'lucide-react'
+import { WHATSAPP_PHONE_NUMBER } from '@/utils/whatsapp'
 
 export function WhatsappFloat() {
   return (
     <a
-      href="https://wa.me/5511988880000"
+      href={`https://wa.me/${WHATSAPP_PHONE_NUMBER}`}
       target="_blank"
       rel="noreferrer"
       aria-label="Conversar no WhatsApp"

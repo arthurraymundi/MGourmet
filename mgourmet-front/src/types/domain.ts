@@ -30,6 +30,24 @@ export interface Product {
   featured?: boolean
 }
 
+export interface CartItem {
+  product: Product
+  quantity: number
+}
+
+export type DeliveryMethod = 'pickup' | 'delivery'
+
+export interface CustomerDetails {
+  name: string
+  phone: string
+  deliveryMethod: DeliveryMethod
+  street: string
+  number: string
+  neighborhood: string
+  complement: string
+  notes: string
+}
+
 export interface KitOffer {
   id: string
   name: string

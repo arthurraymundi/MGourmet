@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { Container } from '@/components/common/container'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/cn'
+import { WHATSAPP_PHONE_NUMBER } from '@/utils/whatsapp'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -35,7 +36,7 @@ export function Navbar() {
           ))}
         </nav>
         <Button asChild size="sm">
-          <a href="https://wa.me/5511988880000" target="_blank" rel="noreferrer">
+          <a href={`https://wa.me/${WHATSAPP_PHONE_NUMBER}`} target="_blank" rel="noreferrer">
             Pedir agora
           </a>
         </Button>

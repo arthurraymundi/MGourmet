@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BenefitCard } from '@/components/common/benefit-card'
 import { FAQItem } from '@/components/common/faq-item'
@@ -17,6 +17,7 @@ import { getKits } from '@/services/kit-service'
 import type { KitOffer } from '@/types/domain'
 import { Card } from '@/components/ui/card'
 import { formatCurrency } from '@/utils/currency'
+import { useCart } from '@/features/cart/use-cart'
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
@@ -42,6 +43,9 @@ export default function HomePage() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [faqItems, setFaqItems] = useState<FaqItem[]>([])
   const [kits, setKits] = useState<KitOffer[]>([])
+  const { items, addItem, incrementItem, decrementItem } = useCart()
+  const quantities = useMemo(() => new Map(items.map((item) => [item.product.id, item.quantity])), [items])
+  const handleAdd = useCallback((product: Product) => addItem(product), [addItem])
 
   useEffect(() => {
     void Promise.all([
@@ -95,7 +99,7 @@ export default function HomePage() {
         <SectionTitle eyebrow="Destaques" title="Produtos em destaque" />
         <div className="grid gap-6 md:grid-cols-2">
           {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} quantity={quantities.get(product.id) ?? 0} onAdd={handleAdd} onIncrement={incrementItem} onDecrement={decrementItem} />
           ))}
         </div>
       </Section>
