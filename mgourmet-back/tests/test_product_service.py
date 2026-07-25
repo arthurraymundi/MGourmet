@@ -21,6 +21,7 @@ class FakeProduct:
     carbs: int = 39
     fat: int = 11
     featured: bool = True
+    is_available: bool = True
 
     def __post_init__(self) -> None:
         if self.ingredients is None:
@@ -30,17 +31,20 @@ class FakeProduct:
 class FakeRepository:
     def __init__(self, products: list[FakeProduct]) -> None:
         self.products = products
+        self.list_arguments: dict[str, object] = {}
 
     async def get_by_id(self, product_id: str) -> FakeProduct | None:
         return next((product for product in self.products if product.id == product_id), None)
 
     async def list(self, **_: object) -> tuple[list[FakeProduct], int]:
+        self.list_arguments = _
         return self.products, len(self.products)
 
 
 @pytest.mark.asyncio
 async def test_list_returns_frontend_compatible_product_shape() -> None:
-    result = await ProductService(FakeRepository([FakeProduct()])).list(page=1, page_size=20)
+    repository = FakeRepository([FakeProduct()])
+    result = await ProductService(repository).list(page=1, page_size=20)
 
     assert result.meta.total == 1
     assert result.items[0].model_dump(by_alias=True, mode="json") == {
@@ -53,4 +57,16 @@ async def test_list_returns_frontend_compatible_product_shape() -> None:
         "ingredients": ["Frango", "Arroz integral"],
         "nutrition": {"calories": 420, "protein": 38, "carbs": 39, "fat": 11},
         "featured": True,
+        "isAvailable": True,
     }
+    assert repository.list_arguments["is_available"] is True
+
+
+@pytest.mark.asyncio
+async def test_admin_list_includes_unavailable_products() -> None:
+    repository = FakeRepository([FakeProduct(is_available=False)])
+
+    result = await ProductService(repository).list_admin(page=1, page_size=20)
+
+    assert result.items[0].is_available is False
+    assert repository.list_arguments["is_available"] is None

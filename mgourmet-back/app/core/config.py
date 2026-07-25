@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import PostgresDsn, RedisDsn
+from pydantic import PostgresDsn, RedisDsn, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     database_url: PostgresDsn
     redis_url: RedisDsn
     cors_origins: str = "http://localhost:5173"
+    jwt_secret_key: SecretStr
+    jwt_algorithm: str = "HS256"
+    jwt_access_token_expire_minutes: int = 480
 
     @property
     def cors_origin_list(self) -> list[str]:

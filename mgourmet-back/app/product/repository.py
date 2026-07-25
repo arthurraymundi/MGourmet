@@ -18,6 +18,7 @@ class ProductRepository:
         *,
         category: ProductCategory | None,
         featured: bool | None,
+        is_available: bool | None,
         search: str | None,
         sort: str,
         descending: bool,
@@ -29,6 +30,8 @@ class ProductRepository:
             filters.append(Product.category == category)
         if featured is not None:
             filters.append(Product.featured.is_(featured))
+        if is_available is not None:
+            filters.append(Product.is_available.is_(is_available))
         if search:
             filters.append(Product.name.ilike(f"%{search}%"))
 
@@ -52,3 +55,7 @@ class ProductRepository:
         await self._session.commit()
         await self._session.refresh(product)
         return product
+
+    async def delete(self, product: Product) -> None:
+        await self._session.delete(product)
+        await self._session.commit()

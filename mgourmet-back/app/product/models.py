@@ -52,3 +52,4 @@ class Product(TimestampMixin, Base):
     carbs: Mapped[int] = mapped_column(Integer, nullable=False)
     fat: Mapped[int] = mapped_column(Integer, nullable=False)
     featured: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False, index=True)
+    is_available: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False, index=True)

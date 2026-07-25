@@ -16,8 +16,7 @@ class NutritionInfo(APIModel):
     fat: int = Field(ge=0)
 
 
-class ProductCreate(APIModel):
-    id: ProductId
+class ProductPayload(APIModel):
     name: str = Field(min_length=2, max_length=160)
     description: str = Field(min_length=2, max_length=5000)
     image_url: HttpUrl
@@ -26,6 +25,14 @@ class ProductCreate(APIModel):
     ingredients: list[str] = Field(min_length=1, max_length=50)
     nutrition: NutritionInfo
     featured: bool = False
+
+
+class ProductCreate(ProductPayload):
+    id: ProductId
+
+
+class AdminProductCreate(ProductPayload):
+    is_available: bool = True
 
 
 class ProductUpdate(APIModel):
@@ -37,6 +44,7 @@ class ProductUpdate(APIModel):
     ingredients: list[str] | None = Field(default=None, min_length=1, max_length=50)
     nutrition: NutritionInfo | None = None
     featured: bool | None = None
+    is_available: bool | None = None
 
 
 class ProductResponse(APIModel):
@@ -49,6 +57,7 @@ class ProductResponse(APIModel):
     ingredients: list[str]
     nutrition: NutritionInfo
     featured: bool
+    is_available: bool
 
     @field_serializer("price")
     def serialize_price(self, value: Decimal) -> float:
@@ -71,4 +80,5 @@ class ProductResponse(APIModel):
                 fat=getattr(product, "fat"),
             ),
             featured=getattr(product, "featured"),
+            is_available=getattr(product, "is_available", True),
         )

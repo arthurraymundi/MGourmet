@@ -11,6 +11,7 @@ from app.core.models import Base
 import app.product.models  # noqa: F401
 import app.kit.models  # noqa: F401
 import app.content.models  # noqa: F401
+import app.auth.models  # noqa: F401
 
 config = context.config
 
