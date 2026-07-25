@@ -16,11 +16,11 @@ def test_testimonial_response_matches_frontend_contract() -> None:
 
 def test_faq_response_matches_frontend_contract() -> None:
     response = FaqResponse.model_validate(
-        {"id": "1", "question": "Como entrega?", "answer": "Refrigerada."}
+        {"id": "1", "question": "Como entrega?", "answer": "Congelada."}
     )
 
     assert response.model_dump(by_alias=True) == {
         "id": "1",
         "question": "Como entrega?",
-        "answer": "Refrigerada.",
+        "answer": "Congelada.",
     }

@@ -4,13 +4,16 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { CartProvider } from './features/cart/cart-context.tsx'
+import { AdminAuthProvider } from './features/admin/admin-auth-context.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <App />
-      </CartProvider>
+      <AdminAuthProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </AdminAuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )

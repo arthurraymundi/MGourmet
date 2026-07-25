@@ -467,7 +467,7 @@ FAQS = (
     Faq(
         id="1",
         question="As refeições chegam congeladas ou refrigeradas?",
-        answer="As marmitas são entregues refrigeradas e prontas para armazenamento seguro.",
+        answer="As marmitas são entregues congeladas e prontas para armazenamento seguro.",
     ),
     Faq(
         id="2",

@@ -32,7 +32,7 @@ export const FAQ_MOCK: FaqItem[] = [
   {
     id: '1',
     question: 'As refeições chegam congeladas ou refrigeradas?',
-    answer: 'As marmitas são entregues refrigeradas e prontas para armazenamento seguro.',
+    answer: 'As marmitas são entregues congelada e prontas para armazenamento seguro.',
   },
   {
     id: '2',

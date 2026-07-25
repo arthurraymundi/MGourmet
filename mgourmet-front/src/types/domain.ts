@@ -28,6 +28,7 @@ export interface Product {
   ingredients: string[]
   nutrition: NutritionInfo
   featured?: boolean
+  isAvailable?: boolean
 }
 
 export interface CartItem {
@@ -46,6 +47,39 @@ export interface CustomerDetails {
   neighborhood: string
   complement: string
   notes: string
+}
+
+export interface AdminUser {
+  id: number
+  name: string
+  email: string
+  createdAt: string
+}
+
+export type OrderStatus = 'Recebido' | 'Preparando' | 'Saiu para entrega' | 'Finalizado' | 'Cancelado'
+
+export interface AdminOrderItem {
+  id: number
+  productId: string
+  productName: string
+  unitPrice: number
+  quantity: number
+}
+
+export interface AdminOrder {
+  id: number
+  customerName: string
+  customerPhone: string
+  deliveryMethod: DeliveryMethod
+  street: string | null
+  number: string | null
+  neighborhood: string | null
+  complement: string | null
+  notes: string | null
+  status: OrderStatus
+  total: number
+  createdAt: string
+  items: AdminOrderItem[]
 }
 
 export interface KitOffer {
