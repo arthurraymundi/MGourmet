@@ -1,4 +1,5 @@
 import { ShoppingBag, Trash2, X } from 'lucide-react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useCart } from '@/features/cart/use-cart'
@@ -7,6 +8,7 @@ import { formatCurrency } from '@/utils/currency'
 import { createOrderMessage, createWhatsAppUrl } from '@/utils/whatsapp'
 import { CheckoutForm } from './checkout-form'
 import { QuantityControl } from './quantity-control'
+import { createOrder } from '../services/order-service'
 
 interface CartSummaryProps {
   mobile?: boolean
@@ -15,13 +17,24 @@ interface CartSummaryProps {
 
 export function CartSummary({ mobile = false, onClose }: CartSummaryProps) {
   const { items, itemCount, total, incrementItem, decrementItem, removeItem, clearCart } = useCart()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
-  function handleCheckout(customer: CustomerDetails) {
+  async function handleCheckout(customer: CustomerDetails) {
     if (items.length === 0) return
-    window.open(createWhatsAppUrl(createOrderMessage(items, total, customer)), '_blank', 'noopener,noreferrer')
-    if (window.confirm('Deseja limpar o carrinho?')) {
-      clearCart()
-      onClose?.()
+    try {
+      setIsSubmitting(true)
+      setCheckoutError(null)
+      const order = await createOrder(items, customer)
+      window.open(createWhatsAppUrl(createOrderMessage(items, order.total, customer)), '_blank', 'noopener,noreferrer')
+      if (window.confirm('Deseja limpar o carrinho?')) {
+        clearCart()
+        onClose?.()
+      }
+    } catch (error) {
+      setCheckoutError(error instanceof Error ? error.message : 'Não foi possível salvar seu pedido. Tente novamente.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -54,7 +67,8 @@ export function CartSummary({ mobile = false, onClose }: CartSummaryProps) {
           <Button variant="ghost" size="sm" type="button" onClick={clearCart} className="w-full">Limpar carrinho</Button>
         </>
       )}
-      <CheckoutForm disabled={items.length === 0} onSubmit={handleCheckout} />
+      {checkoutError ? <p className="mt-4 text-sm text-red-600" role="alert">{checkoutError}</p> : null}
+      <CheckoutForm disabled={items.length === 0} isSubmitting={isSubmitting} onSubmit={handleCheckout} />
     </>
   )
 

@@ -9,10 +9,11 @@ const initialCustomer: CustomerDetails = {
 
 interface CheckoutFormProps {
   disabled: boolean
-  onSubmit: (customer: CustomerDetails) => void
+  isSubmitting: boolean
+  onSubmit: (customer: CustomerDetails) => Promise<void>
 }
 
-export function CheckoutForm({ disabled, onSubmit }: CheckoutFormProps) {
+export function CheckoutForm({ disabled, isSubmitting, onSubmit }: CheckoutFormProps) {
   const [customer, setCustomer] = useState<CustomerDetails>(initialCustomer)
   const [errors, setErrors] = useState<Partial<Record<keyof CustomerDetails, string>>>({})
 
@@ -21,7 +22,7 @@ export function CheckoutForm({ disabled, onSubmit }: CheckoutFormProps) {
     setErrors((current) => ({ ...current, [field]: undefined }))
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const nextErrors: Partial<Record<keyof CustomerDetails, string>> = {}
     if (!customer.name.trim()) nextErrors.name = 'Informe seu nome.'
@@ -32,7 +33,7 @@ export function CheckoutForm({ disabled, onSubmit }: CheckoutFormProps) {
       if (!customer.neighborhood.trim()) nextErrors.neighborhood = 'Informe o bairro.'
     }
     setErrors(nextErrors)
-    if (Object.keys(nextErrors).length === 0) onSubmit(customer)
+    if (Object.keys(nextErrors).length === 0) await onSubmit(customer)
   }
 
   return (
@@ -62,7 +63,7 @@ export function CheckoutForm({ disabled, onSubmit }: CheckoutFormProps) {
       <FormField label="Observações (opcional)">
         <textarea className="min-h-20 w-full rounded-xl border border-[var(--color-border)] bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary-500)]" value={customer.notes} onChange={(event) => updateField('notes', event.target.value)} />
       </FormField>
-      <Button className="w-full" type="submit" disabled={disabled}>Finalizar pedido pelo WhatsApp</Button>
+      <Button className="w-full" type="submit" disabled={disabled || isSubmitting}>{isSubmitting ? 'Salvando pedido...' : 'Finalizar pedido pelo WhatsApp'}</Button>
       {disabled ? <p className="text-center text-sm text-[var(--color-text-secondary)]" role="status">Adicione produtos ao carrinho para continuar.</p> : null}
     </form>
   )

@@ -11,10 +11,26 @@ export interface ListResponse<T> {
 }
 
 export async function getFromApi<T>(path: string): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`)
+  return requestFromApi<T>(path)
+}
+
+export async function postToApi<T>(path: string, body: unknown): Promise<T> {
+  return requestFromApi<T>(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+}
+
+export async function requestFromApi<T>(path: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, options)
 
   if (!response.ok) {
-    throw new Error(`Falha ao carregar dados da API: ${response.status}`)
+    const error: unknown = await response.json().catch(() => null)
+    const detail = typeof error === 'object' && error !== null && 'detail' in error && typeof error.detail === 'string'
+      ? error.detail
+      : `Falha ao comunicar com a API: ${response.status}`
+    throw new Error(detail)
   }
 
   return response.json() as Promise<T>

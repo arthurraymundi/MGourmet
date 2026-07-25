@@ -13,6 +13,13 @@ class ProductRepository:
     async def get_by_id(self, product_id: str) -> Product | None:
         return await self._session.get(Product, product_id)
 
+    async def get_available_by_ids(self, product_ids: list[str]) -> Sequence[Product]:
+        statement = select(Product).where(
+            Product.id.in_(product_ids),
+            Product.is_available.is_(True),
+        )
+        return (await self._session.scalars(statement)).all()
+
     async def list(
         self,
         *,
