@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-FmswmOU_.js";var n=t();function r({className:t,...r}){return(0,n.jsx)(`div`,{className:e(`rounded-2xl border border-[var(--color-border)] bg-white p-6 shadow-sm`,t),...r})}export{r as t};

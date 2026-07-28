@@ -1,8 +1,0 @@
-__pycache__/
-*.py[cod]
-.env
-.venv/
-.mypy_cache/
-.pytest_cache/
-.ruff_cache/
-coverage.xml
