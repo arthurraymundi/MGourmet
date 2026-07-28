@@ -1,0 +1,1 @@
+import{t as e}from"./index-BWPC-OOD.js";async function t(){return(await e(`/kits`)).items}export{t};
