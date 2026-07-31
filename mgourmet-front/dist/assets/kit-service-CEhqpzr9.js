@@ -1,0 +1,1 @@
+import{t as e}from"./index-CEnkGN0-.js";async function t(){return(await e(`/kits`)).items}export{t};

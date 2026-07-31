@@ -1,0 +1,1 @@
+import{n as e,t}from"./jsx-runtime-FmswmOU_.js";var n=t();function r({className:t,...r}){return(0,n.jsx)(`span`,{className:e(`inline-flex items-center rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-700`,t),...r})}export{r as t};

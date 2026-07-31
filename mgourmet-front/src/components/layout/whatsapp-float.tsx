@@ -1,10 +1,10 @@
 import { MessageCircle } from 'lucide-react'
-import { WHATSAPP_PHONE_NUMBER } from '@/utils/whatsapp'
+import { COMPANY_WHATSAPP_URL } from '@/data/company'
 
 export function WhatsappFloat() {
   return (
     <a
-      href={`https://wa.me/${WHATSAPP_PHONE_NUMBER}`}
+      href={COMPANY_WHATSAPP_URL}
       target="_blank"
       rel="noreferrer"
       aria-label="Negociar pedido pelo WhatsApp"

@@ -1,0 +1,1 @@
+var e=new Intl.NumberFormat(`pt-BR`,{style:`currency`,currency:`BRL`});function t(t){return e.format(t)}function n(t){return e.format(t).replace(/\u00a0/g,` `)}export{n,t};

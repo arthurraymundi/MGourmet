@@ -5,8 +5,8 @@ from decimal import Decimal
 import pytest
 
 from app.core.exceptions import EntityNotFoundError
-from app.order.models import DeliveryMethod, Order
-from app.order.schemas import OrderCreate, OrderItemCreate
+from app.order.models import DeliveryMethod, Order, OrderSource, OrderStatus
+from app.order.schemas import AdminOrderCreate, OrderCreate, OrderItemCreate
 from app.order.service import OrderService
 
 
@@ -63,3 +63,24 @@ async def test_order_rejects_unavailable_or_missing_product() -> None:
 
     with pytest.raises(EntityNotFoundError, match="não estão disponíveis"):
         await service.create(create_payload())
+
+
+@pytest.mark.asyncio
+async def test_manual_order_uses_the_same_product_price_calculation() -> None:
+    service = OrderService(
+        FakeOrderRepository(),
+        FakeProductRepository([FakeProduct("frango-grelhado-fit", "Frango Fit", Decimal("28.50"))]),
+    )
+    payload = AdminOrderCreate(
+        **create_payload().model_dump(),
+        source=OrderSource.WHATSAPP,
+        payment_method="Pix",
+        status=OrderStatus.PREPARING,
+    )
+
+    order = await service.create_admin(payload)
+
+    assert order.total == Decimal("57.00")
+    assert order.source == OrderSource.WHATSAPP
+    assert order.payment_method == "Pix"
+    assert order.status == OrderStatus.PREPARING

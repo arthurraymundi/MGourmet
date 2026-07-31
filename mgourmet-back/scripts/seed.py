@@ -493,9 +493,9 @@ CONTENT_ITEMS = (
 
 CONTACT_INFO = ContactInfo(
     id="default",
-    whatsapp="+55 (11) 98888-0000",
-    instagram="@mgourmetfit",
-    address="Rua Exemplo, 250 - São Paulo/SP",
+    whatsapp="+55 11 97670-2164",
+    instagram="https://www.instagram.com/mgourmet_comidafit.ofc/",
+    address="Entregas em Jundiaí/SP",
     business_hours="Segunda a sábado, 08h às 19h",
 )
 

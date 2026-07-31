@@ -1,1 +1,0 @@
-import{t as e}from"./index-BWPC-OOD.js";async function t(){return(await e(`/content/benefits`)).items}async function n(){return(await e(`/content/how-it-works`)).items}async function r(){return(await e(`/testimonials`)).items}async function i(){return(await e(`/faqs`)).items}async function a(){return e(`/contact`)}export{r as a,n as i,a as n,i as r,t};

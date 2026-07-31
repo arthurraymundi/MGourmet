@@ -1,4 +1,4 @@
-import type { ContactInfo, FaqItem, Testimonial } from '@/types/domain'
+import type { FaqItem, Testimonial } from '@/types/domain'
 
 export const BENEFITS = [
   'Pratos balanceados por nutricionistas',
@@ -45,10 +45,3 @@ export const FAQ_MOCK: FaqItem[] = [
     answer: 'Sim. Temos planos corporativos para equipes com personalização de cardápio.',
   },
 ]
-
-export const CONTACT_MOCK: ContactInfo = {
-  whatsapp: '+55 (11) 98888-0000',
-  instagram: '@mgourmetfit',
-  address: 'Rua Exemplo, 250 - São Paulo/SP',
-  businessHours: 'Segunda a sábado, 08h às 19h',
-}

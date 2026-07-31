@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router-dom'
 import { Container } from '@/components/common/container'
+import { BrandLogo } from '@/components/common/brand-logo'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/cn'
-import { WHATSAPP_PHONE_NUMBER } from '@/utils/whatsapp'
+import { COMPANY_WHATSAPP_URL } from '@/data/company'
 
 const links = [
   { to: '/', label: 'Home' },
@@ -16,9 +17,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-white/90 backdrop-blur">
       <Container className="flex h-16 items-center justify-between py-3">
-        <NavLink to="/" className="text-lg font-semibold">
-          M Gourmet
-        </NavLink>
+        <NavLink to="/" aria-label="Página inicial da MGourmet"><BrandLogo className="h-10" /></NavLink>
         <nav className="hidden items-center gap-6 md:flex">
           {links.map((link) => (
             <NavLink
@@ -36,7 +35,7 @@ export function Navbar() {
           ))}
         </nav>
         <Button asChild size="sm">
-          <a href={`https://wa.me/${WHATSAPP_PHONE_NUMBER}`} target="_blank" rel="noreferrer">
+          <a href={COMPANY_WHATSAPP_URL} target="_blank" rel="noreferrer">
             Negociar pedido
           </a>
         </Button>

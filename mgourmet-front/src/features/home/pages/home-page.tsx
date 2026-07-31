@@ -18,17 +18,17 @@ import type { KitOffer } from '@/types/domain'
 import { Card } from '@/components/ui/card'
 import { formatCurrency } from '@/utils/currency'
 import { useCart } from '@/features/cart/use-cart'
+import { COMPANY } from '@/data/company'
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  name: 'M Gourmet',
+  name: COMPANY.name,
   image: 'https://mgourmet.com.br/og-image.jpg',
-  telephone: '+55 11 98888-0000',
+  telephone: COMPANY.phone,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Rua Exemplo, 250',
-    addressLocality: 'São Paulo',
+    addressLocality: 'Jundiaí',
     addressRegion: 'SP',
     addressCountry: 'BR',
   },
@@ -122,7 +122,7 @@ export default function HomePage() {
       </Section>
 
       <Section className="bg-[var(--color-bg-subtle)]">
-        <SectionTitle eyebrow="Depoimentos" title="Quem já transformou a rotina com a M Gourmet" />
+        <SectionTitle eyebrow="Depoimentos" title={`Quem já transformou a rotina com a ${COMPANY.name}`} />
         <div className="grid gap-4 md:grid-cols-2">
           {testimonials.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />

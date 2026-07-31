@@ -20,6 +20,13 @@ class OrderStatus(StrEnum):
     CANCELED = "Cancelado"
 
 
+class OrderSource(StrEnum):
+    WEBSITE = "site"
+    PHONE = "telefone"
+    WHATSAPP = "whatsapp"
+    IN_PERSON = "presencial"
+
+
 class Order(TimestampMixin, Base):
     __tablename__ = "orders"
     __table_args__ = (CheckConstraint("total >= 0", name="order_total_non_negative"),)
@@ -50,6 +57,16 @@ class Order(TimestampMixin, Base):
         nullable=False,
         index=True,
     )
+    source: Mapped[OrderSource] = mapped_column(
+        Enum(
+            OrderSource,
+            name="order_source",
+            values_callable=lambda enum: [item.value for item in enum],
+        ),
+        default=OrderSource.WEBSITE,
+        nullable=False,
+    )
+    payment_method: Mapped[str | None] = mapped_column(String(100))
     total: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
     items: Mapped[list["OrderItem"]] = relationship(
         back_populates="order", cascade="all, delete-orphan", passive_deletes=True

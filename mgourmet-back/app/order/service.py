@@ -3,9 +3,9 @@ from math import ceil
 
 from app.core.exceptions import EntityNotFoundError
 from app.core.schemas import ListResponse, PaginationMeta
-from app.order.models import Order, OrderItem, OrderStatus
+from app.order.models import Order, OrderItem, OrderSource, OrderStatus
 from app.order.repository import OrderRepository
-from app.order.schemas import OrderCreate, OrderResponse, OrderStatusUpdate
+from app.order.schemas import AdminOrderCreate, OrderCreate, OrderResponse, OrderStatusUpdate
 from app.product.repository import ProductRepository
 
 
@@ -15,6 +15,24 @@ class OrderService:
         self._product_repository = product_repository
 
     async def create(self, payload: OrderCreate) -> OrderResponse:
+        return await self._create(payload, status=OrderStatus.RECEIVED, source=OrderSource.WEBSITE, payment_method=None)
+
+    async def create_admin(self, payload: AdminOrderCreate) -> OrderResponse:
+        return await self._create(
+            payload,
+            status=payload.status,
+            source=payload.source,
+            payment_method=payload.payment_method,
+        )
+
+    async def _create(
+        self,
+        payload: OrderCreate,
+        *,
+        status: OrderStatus,
+        source: OrderSource,
+        payment_method: str | None,
+    ) -> OrderResponse:
         quantities: dict[str, int] = {}
         for item in payload.items:
             quantities[item.product_id] = quantities.get(item.product_id, 0) + item.quantity
@@ -44,7 +62,9 @@ class OrderService:
             neighborhood=self._empty_to_none(payload.neighborhood),
             complement=self._empty_to_none(payload.complement),
             notes=self._empty_to_none(payload.notes),
-            status=OrderStatus.RECEIVED,
+            status=status,
+            source=source,
+            payment_method=self._empty_to_none(payment_method),
             total=total,
             items=items,
         )
@@ -56,8 +76,12 @@ class OrderService:
             raise EntityNotFoundError("Pedido não encontrado.")
         return OrderResponse.from_order(order)
 
-    async def list(self, *, page: int, page_size: int) -> ListResponse[OrderResponse]:
-        orders, total = await self._repository.list(offset=(page - 1) * page_size, limit=page_size)
+    async def list(
+        self, *, page: int, page_size: int, search: str | None, status: OrderStatus | None
+    ) -> ListResponse[OrderResponse]:
+        orders, total = await self._repository.list(
+            offset=(page - 1) * page_size, limit=page_size, search=search, status=status
+        )
         return ListResponse[OrderResponse](
             items=[OrderResponse.from_order(order) for order in orders],
             meta=PaginationMeta(
@@ -74,6 +98,12 @@ class OrderService:
             raise EntityNotFoundError("Pedido não encontrado.")
         order.status = payload.status
         return OrderResponse.from_order(await self._repository.update(order))
+
+    async def delete(self, order_id: int) -> None:
+        order = await self._repository.get_by_id(order_id)
+        if order is None:
+            raise EntityNotFoundError("Pedido não encontrado.")
+        await self._repository.delete(order)
 
     @staticmethod
     def _empty_to_none(value: str | None) -> str | None:
