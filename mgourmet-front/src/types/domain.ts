@@ -57,6 +57,7 @@ export interface AdminUser {
 }
 
 export type OrderStatus = 'Recebido' | 'Preparando' | 'Saiu para entrega' | 'Finalizado' | 'Cancelado'
+export type OrderSource = 'site' | 'telefone' | 'whatsapp' | 'presencial'
 
 export interface AdminOrderItem {
   id: number
@@ -77,6 +78,8 @@ export interface AdminOrder {
   complement: string | null
   notes: string | null
   status: OrderStatus
+  source: OrderSource
+  paymentMethod: string | null
   total: number
   createdAt: string
   items: AdminOrderItem[]

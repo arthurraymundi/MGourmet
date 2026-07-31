@@ -1,1 +1,0 @@
-import{r as e}from"./index-BWPC-OOD.js";function t(e,t={}){return{...t,headers:{"Content-Type":`application/json`,Authorization:`Bearer ${e}`,...t.headers}}}async function n(n){return(await e(`/orders?page_size=100`,t(n))).items}function r(n,r,i){return e(`/orders/${r}/status`,t(n,{method:`PUT`,body:JSON.stringify({status:i})}))}export{r as n,n as t};

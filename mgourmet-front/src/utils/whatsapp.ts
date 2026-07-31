@@ -1,7 +1,8 @@
 import type { CartItem, CustomerDetails } from '@/types/domain'
+import { COMPANY, COMPANY_WHATSAPP_URL } from '@/data/company'
 import { formatCurrencyForMessage } from './currency'
 
-export const WHATSAPP_PHONE_NUMBER = '5511988880000'
+export const WHATSAPP_PHONE_NUMBER = COMPANY.whatsappPhone
 
 export function createOrderMessage(items: CartItem[], total: number, customer: CustomerDetails) {
   const deliveryDetails =
@@ -17,5 +18,5 @@ export function createOrderMessage(items: CartItem[], total: number, customer: C
 }
 
 export function createWhatsAppUrl(message: string) {
-  return `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodeURIComponent(message)}`
+  return `${COMPANY_WHATSAPP_URL}?text=${encodeURIComponent(message)}`
 }

@@ -4,7 +4,7 @@ from decimal import Decimal
 from pydantic import Field, field_serializer, model_validator
 
 from app.core.schemas import APIModel
-from app.order.models import DeliveryMethod, OrderStatus
+from app.order.models import DeliveryMethod, OrderSource, OrderStatus
 from app.product.schemas import ProductId
 
 
@@ -31,6 +31,12 @@ class OrderCreate(APIModel):
             if not all(field and field.strip() for field in required_fields):
                 raise ValueError("Rua, número e bairro são obrigatórios para entrega.")
         return self
+
+
+class AdminOrderCreate(OrderCreate):
+    source: OrderSource
+    payment_method: str = Field(min_length=2, max_length=100)
+    status: OrderStatus = OrderStatus.RECEIVED
 
 
 class OrderStatusUpdate(APIModel):
@@ -60,6 +66,8 @@ class OrderResponse(APIModel):
     complement: str | None
     notes: str | None
     status: OrderStatus
+    source: OrderSource
+    payment_method: str | None
     total: Decimal
     created_at: datetime
     items: list[OrderItemResponse]

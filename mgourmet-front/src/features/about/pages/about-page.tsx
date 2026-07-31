@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card'
 import { Section } from '@/components/common/section'
 import { SectionTitle } from '@/components/common/section-title'
 import { Seo } from '@/components/common/seo'
+import { COMPANY } from '@/data/company'
 import { PAGE_META } from '@/data/seo'
 
 export default function AboutPage() {
@@ -18,7 +19,7 @@ export default function AboutPage() {
           <Card>
             <h3 className="text-xl font-semibold">História</h3>
             <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              A M Gourmet nasceu para resolver a falta de praticidade de quem busca alimentação equilibrada.
+              A {COMPANY.name} nasceu para resolver a falta de praticidade de quem busca alimentação equilibrada.
             </p>
           </Card>
           <Card>
